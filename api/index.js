@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import userRouter from "./routes/user.route.js";
 
 const app = express();
 
@@ -12,6 +13,8 @@ mongoose
   .catch((err) => {
     console.log("MongoDB is not connected");
   });
+
+app.use("/api/user", userRouter);
 
 app.listen(PORT, () => {
   console.log(`server is running at http:localhost:${PORT}!`);

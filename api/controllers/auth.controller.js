@@ -8,7 +8,7 @@ export const auth = async (req, res, next) => {
 
   try {
     await newUser.save();
-    res.status(201).send("user is created successfully!");
+    res.status(201).json("User created successfully!");
   } catch (error) {
     next(error);
   }

@@ -21,6 +21,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -183,6 +184,12 @@ const Profile = () => {
         >
           {loading ? "loading..." : "update"}
         </button>
+        <Link
+          className="bg-green-700 p-3 text-center rounded-lg text-white hover:opacity-95 uppercase"
+          to="/create-listing"
+        >
+          Create Listing
+        </Link>
       </form>
       <div className="flex justify-between text-red-600 p-3">
         <span onClick={handleDeleteUser} className="cursor-pointer">

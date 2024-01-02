@@ -185,7 +185,6 @@ const CreateListing = () => {
             placeholder="Name"
             required
             minLength={10}
-            maxLength={20}
             value={formData.name}
             onChange={handleChange}
           />
@@ -196,7 +195,6 @@ const CreateListing = () => {
             placeholder="Description"
             required
             minLength={10}
-            maxLength={50}
             value={formData.description}
             onChange={handleChange}
           />
@@ -207,7 +205,6 @@ const CreateListing = () => {
             placeholder="Address"
             required
             minLength={5}
-            maxLength={50}
             value={formData.address}
             onChange={handleChange}
           />

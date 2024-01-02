@@ -32,6 +32,8 @@ const Profile = () => {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [errorShowListings, setErrorShowListings] = useState(false);
+  const [userListings, setUserListings] = useState([]);
 
   useEffect(() => {
     if (file) {
@@ -121,6 +123,22 @@ const Profile = () => {
     }
   };
 
+  const handleShowListings = async () => {
+    try {
+      setErrorShowListings(false);
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        setErrorShowListings(true);
+        return;
+      }
+      setUserListings(data);
+      console.log(userListings);
+    } catch (error) {
+      setErrorShowListings(true);
+    }
+  };
+
   return (
     <section>
       <h1 className="text-center font-semibold my-7 text-xl">Profile</h1>
@@ -203,6 +221,44 @@ const Profile = () => {
       <p className="text-green-700 mt-5">
         {updateSuccess ? "User updated successfully!" : ""}
       </p>
+      <button
+        onClick={handleShowListings}
+        className="w-full text-green-700 mb-7"
+        type="button"
+      >
+        Show Listings
+      </button>
+      <p>{errorShowListings ? "Error showing listings" : ""}</p>
+      {userListings && userListings.length > 0 && (
+        <div className="flex flex-col gap-6 p-3">
+          <h1 className="text-center font-semibold text-xl">Your Listings</h1>
+          {userListings.map((listing) => (
+            <div
+              className="flex gap-2 justify-between items-center p-3 border border-gray-300 rounded"
+              key={listing._id}
+            >
+              <Link>
+                <img
+                  className="w-[5rem] object-contain"
+                  src={listing.imageUrls[0]}
+                  alt="Image"
+                />
+              </Link>
+              <Link className="font-semibold text-md hover:underline truncate flex-1">
+                {listing.name}
+              </Link>
+              <div className="flex flex-col">
+                <button className="text-red-600 uppercase" type="button">
+                  Delete
+                </button>
+                <button className="text-green-600 uppercase" type="button">
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 };

@@ -7,6 +7,7 @@ import SignIn from "./pages/SignIn";
 import Error from "./pages/Error";
 import Profile from "./pages/Profile";
 import CreateListing from "./pages/CreateListing";
+import Listing from "./pages/Listing";
 
 //layouts
 import Header from "./layouts/Header";
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="sign-up/" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/listing/:listingId" element={<Listing />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-listing" element={<CreateListing />} />

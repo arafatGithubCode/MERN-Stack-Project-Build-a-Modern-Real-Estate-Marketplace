@@ -175,7 +175,7 @@ const UpdateListing = () => {
       if (data.success === false) {
         setError(data.message);
       }
-      navigate(`/listing${data._id}`);
+      navigate(`/listing/${data._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -350,7 +350,6 @@ const UpdateListing = () => {
                 type="file"
                 accept="image/*"
                 multiple
-                required
                 id="images"
                 disabled={uploading}
               />

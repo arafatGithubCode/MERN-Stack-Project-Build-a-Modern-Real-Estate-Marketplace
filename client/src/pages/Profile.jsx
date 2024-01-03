@@ -256,14 +256,17 @@ const Profile = () => {
               className="flex gap-2 justify-between items-center p-3 border border-gray-300 rounded"
               key={listing._id}
             >
-              <Link>
+              <Link to={`/listing/${listing._id}`}>
                 <img
                   className="w-[5rem] object-contain"
                   src={listing.imageUrls[0]}
                   alt="Image"
                 />
               </Link>
-              <Link className="font-semibold text-md hover:underline truncate flex-1">
+              <Link
+                to={`/listing/${listing._id}`}
+                className="font-semibold text-md hover:underline truncate flex-1"
+              >
                 {listing.name}
               </Link>
               <div className="flex flex-col">

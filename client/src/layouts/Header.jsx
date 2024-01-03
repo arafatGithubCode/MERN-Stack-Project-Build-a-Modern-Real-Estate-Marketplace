@@ -10,8 +10,10 @@ const Header = () => {
     <header className="bg-slate-200 shadow-md">
       <div className="flex p-3 justify-between items-center max-w-6xl mx-auto">
         <h1 className="flex flex-wrap font-bold text-sm sm:text-xl">
-          <span className="text-slate-500">Arafat</span>
-          <span className="text-slate-700">Estate</span>
+          <Link to="/">
+            <span className="text-slate-500">Arafat</span>
+            <span className="text-slate-700">Estate</span>
+          </Link>
         </h1>
         <form className="flex items-center justify-center bg-white p-2 rounded-lg">
           <input
@@ -37,8 +39,8 @@ const Header = () => {
           <Link to="/profile">
             {currentUser ? (
               <img
-                className="rounded-full w-7 h-7 object-cover"
-                src={currentUser.avatar}
+                className="rounded-full w-7 h-7 object-cover bg-white"
+                src={currentUser.avatar || "./avatar.png"}
                 alt="Image"
               />
             ) : (

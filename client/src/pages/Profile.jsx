@@ -7,9 +7,7 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
-  signInFailure,
   signoutUserStart,
-  signInSuccess,
 } from "../redux/user/userSlice.js";
 import { useDispatch } from "react-redux";
 
@@ -21,7 +19,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -34,6 +32,7 @@ const Profile = () => {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [errorShowListings, setErrorShowListings] = useState(false);
   const [userListings, setUserListings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (file) {
@@ -115,11 +114,13 @@ const Profile = () => {
       const res = await fetch("/api/auth/signout");
       const data = await res.json();
       if (data.success === false) {
-        dispatch(signInFailure(data.message));
+        dispatch(deleteUserFailure(data.message));
       }
-      dispatch(signInSuccess(data));
+      localStorage.removeItem("user");
+      dispatch(deleteUserSuccess(data));
+      navigate("/sign-in");
     } catch (error) {
-      dispatch(signInFailure(error.message));
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -273,9 +274,11 @@ const Profile = () => {
                 >
                   Delete
                 </button>
-                <button className="text-green-600 uppercase" type="button">
-                  Edit
-                </button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button className="text-green-600 uppercase" type="button">
+                    Edit
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

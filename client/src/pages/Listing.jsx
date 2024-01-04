@@ -12,13 +12,19 @@ import { FaBath } from "react-icons/fa";
 import { FaParking } from "react-icons/fa";
 import { FaChair } from "react-icons/fa";
 
+import { useSelector } from "react-redux";
+import Contact from "../components/Contact.jsx";
+
 const Listing = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [listing, setListing] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [contact, setContact] = useState(false);
 
   const params = useParams();
+
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -85,7 +91,7 @@ const Listing = () => {
               Link Copied!
             </p>
           )}
-          <div className="flex flex-col gap-4 p-3">
+          <div className="flex flex-col gap-4 p-3 max-w-4xl mx-auto">
             <p className="text-2xl font-bold text-black mt-7">
               {listing.name} - ${" "}
               {listing.offer
@@ -145,6 +151,17 @@ const Listing = () => {
                 </span>
               </li>
             </ul>
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button
+                className="bg-slate-700 p-3 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-50"
+                onClick={() => setContact(true)}
+                type="button"
+              >
+                Contact <span className="lowercase text-yellow-400">to</span>{" "}
+                Landlord
+              </button>
+            )}
+            {contact && <Contact listing={listing} />}
           </div>
         </div>
       )}

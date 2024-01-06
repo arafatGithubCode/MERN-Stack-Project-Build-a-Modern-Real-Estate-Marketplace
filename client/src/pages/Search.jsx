@@ -7,6 +7,7 @@ const Search = () => {
 
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     type: "all",
@@ -16,7 +17,7 @@ const Search = () => {
     sort: "createdAt",
     order: "desc",
   });
-  console.log(listings && listings);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
@@ -49,9 +50,15 @@ const Search = () => {
 
     const fetchListings = async () => {
       setLoading(true);
+      setShowMore(false);
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/listing/get?${searchQuery}`);
       const data = await res.json();
+      if (data.length > 8) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
+      }
       setListings(data);
       setLoading(false);
     };
@@ -102,7 +109,20 @@ const Search = () => {
     urlParams.set("order", sidebarData.order);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
-    console.log(urlParams);
+  };
+
+  const onShowMoreClick = async () => {
+    const numOfListings = listings.length;
+    const startIndex = numOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/get?${searchQuery}`);
+    const data = await res.json();
+    if (data.length < 9) {
+      setShowMore(false);
+    }
+    setListings([...listings, ...data]);
   };
   return (
     <div className="flex flex-col md:flex-row">
@@ -234,6 +254,15 @@ const Search = () => {
               <ListingItem key={listing._id} listing={listing} />
             ))}
         </div>
+        {showMore && (
+          <button
+            onClick={onShowMoreClick}
+            className="w-full text-lg text-green-700 font-semibold mb-5 hover:underline"
+            type="button"
+          >
+            Show More
+          </button>
+        )}
       </div>
     </div>
   );
